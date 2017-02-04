@@ -1,19 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Globals;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour
 {
 
-
     public static GameObject CurrentlySelectedUnit;
     private Vector2 mouseDownPoint;
     static List<GameObject> _selectedPlayers = null;
-
+    GlobalPlayersController _globalController;
     private void Awake()
     {
         mouseDownPoint = Vector2.zero;
         _selectedPlayers = new List<GameObject>();
+        _globalController = GlobalPlayersController.Instance;
     }
 
     public static ArrayList CurrentlySelectedUnits = new ArrayList();
@@ -27,6 +30,7 @@ public class PlayerController : MonoBehaviour
         //    if (_selectedPlayers == null)
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -34,30 +38,30 @@ public class PlayerController : MonoBehaviour
         Vector2 currMousePos = Input.mousePosition;
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-        if (hit)
+
+        Action<Vector2> locationAction = LocationHandler;
+        if (hit.collider.transform.FindChild("Player"))
         {
             if (Input.GetMouseButtonDown(0))
                 mouseDownPoint = hit.point;
 
             if (Input.GetMouseButtonUp(0) && didUserClickedLeftMouse(hit.point))
             {
+                bool isRegisteredLocationEvent = _globalController.IsHandlerRegisteredFor(UpdateOption.Location, LocationHandler);
                 if (hit.collider == transform.GetComponent<Collider2D>())
                 {
-                    if (_selectedPlayers.Contains(currGameObj))
-                        _selectedPlayers.Remove(currGameObj);
+                    if (isRegisteredLocationEvent)
+                        _globalController.UnRegisterFromLocationUpdates(LocationHandler);
                     else
-                    {
-                        if (!isShiftKeyDown())
-                            _selectedPlayers.Clear();
-                        _selectedPlayers.Add(gameObject);
-                    }
+                        _globalController.RegisterForLocationUpdates(LocationHandler);
                     Debug.Log(hit.collider.name);
                 }
-                //if current gameObject selected, but the user chose other object - deselect the current
-                else if (_selectedPlayers.Contains(currGameObj))
-                {
-                    _selectedPlayers.Remove(currGameObj);
-                }
+                ////if current gameObject selected, but the user chose other object - deselect the current
+                //else if (isRegisteredLocationEvent)
+                //{
+                //    _globalController.UnRegisterFromLocationUpdates(LocationHandler);
+                //}
+
             }
         }
         else
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviour
             {
                 Vector2 v2 = Camera.main.ScreenToWorldPoint(currMousePos);
                 if (didUserClickedLeftMouse(v2))
-                    _selectedPlayers.Clear();
+                    _globalController.ClearEventHandlers(UpdateOption.Location);
             }
         }
         //if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
@@ -90,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
         //}
 
-        if (_selectedPlayers.Contains(this.gameObject))
+        if (_globalController.IsHandlerRegisteredFor(UpdateOption.Location, LocationHandler))
         {
             float horizInput = Input.GetAxisRaw("Horizontal");
             float verInput = Input.GetAxisRaw("Vertical");
@@ -107,14 +111,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void otherPlayerWasChosen()
-    {
-
-    }
-
     private void OnMouseDown()
     {
-        isSelected = true;
+    }
+
+    //triggers by GlobalPlayersController when location is changed
+    private void LocationHandler(Vector2 newLocation)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, newLocation, 10000);
     }
 
     #region Helper Functions

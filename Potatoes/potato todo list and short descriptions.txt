@@ -1,0 +1,45 @@
+The main idea is to have big potatoes have "followers" which are small potatoes that have their weapons/attacks etc and the big potato is the only controlable character/s.
+For example you select one big potato and you order it to attack a different group or attack-move or something similar and whoever he focuses his group goes for 
+(later we can maybe add a better action for it, for example just have the potato "order" his minions to protect him or be defensive and stay near or rush ahead as soon as target given, 
+but idk how we will do it for now depending on our limitations.
+the AI will have either many small potatoes and sometimes "bosses" which are big ones controlled by AI but acting exact same way as the human controlled ones.
+
+
+
+
+
+Unit hierarchy (Unit->Character->Type) technically its possible to put all in the same script but i think it will be more managable and expandable if it will be cut this way
+
+Unit - base unit scripts
+	contains Default Values: HP(HealthPoits), AP(Action Points), HitboxScale, SpriteSize, DefaultSprite //add more here later
+	contains Default Values: Selectable?, Selected?, CanMove?, ControllingPlayer (Player or AI?)
+	contains path finding script
+	contains default sprite for testing purposes that will be changed by child later to the apropriate one
+	contains hitbox/colision box for clicks and stuff that can be edited by child to fit in size and needs etc
+
+-Character - defines its a character that can be controlled by AI or human
+	has a flag or whatever to check who this character belongs to (which player/ai) and then set the value which we got from parent and the activated the needed script? i dunno yet
+	contains default AI script (the reason i want the AI script and controller be here so it will be easier to make same characters that can be controlled by either
+	contains player controller script/hook(?) (a way to controll the character, select it etc)
+	contains a value or type or whatever of which character is it, is it ground unit? maybe flying unit (maybe in the future? i dunno better keep it at least possible)
+	also contains the value is it a follower character or a controlable character. Since i want big potatoes to be the controlable character sand the small ones do what the big one "tells them to do" it should be defined what type this is
+
+
+--Type - defines what TYPE of character it is (unarmed, meele, ranged etc)
+	has all the more appropriate moves for the character, for example if its a spear holding one, he will have his own set of moves and default hp values etc
+
+
+
+/////////// todo
+Setup Hierarchy (Unit->character->type)
+Setup the proper values and functions to the scripts
+make simple character which will be testdummy which will be "character" child
+setup the default sprite for it for testing
+Get path finding implemented
+get animations working
+work on ai (when we reach here ill add more tasks)
+
+///////////// todo
+get the sprites ready
+get the animations ready
+work more on the hierarchy and what values they need etc

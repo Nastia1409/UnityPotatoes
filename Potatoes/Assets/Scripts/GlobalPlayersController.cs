@@ -26,7 +26,6 @@ namespace Globals
         //prevent from other classes to create instances from this class
         private GlobalPlayersController()
         {
-           
         }
         #endregion
 

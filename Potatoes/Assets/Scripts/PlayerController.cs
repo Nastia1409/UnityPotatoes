@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     {
         mouseDownPoint = Vector2.zero;
         _selectedPlayers = new List<GameObject>();
-        _globalController = GlobalPlayersController.Instance;
+        _globalController = GetComponent<GlobalPlayersController>();//GlobalPlayersController.Instance;
     }
 
     public static ArrayList CurrentlySelectedUnits = new ArrayList();
@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
         Action<Vector2> locationAction = LocationHandler;
-        if (hit.collider.transform.FindChild("Player"))
+        if (hit.collider != null && hit.collider.transform.FindChild("Player"))
         {
             if (Input.GetMouseButtonDown(0))
                 mouseDownPoint = hit.point;

@@ -52,9 +52,7 @@ public class Unit : MonoBehaviour {
 		bool followingPath = true;
 		int pathIndex = 0;
         Vector3 tmp = path.lookPoints[0];
-        tmp.x = 90;
-
-        transform.LookAt (tmp/*path.lookPoints [0]*/); //Nastya removed - rotates the object
+        transform.LookAt (path.lookPoints [0]); //Nastya removed - rotates the object
 
 		float speedPercent = 1;
 
@@ -78,10 +76,13 @@ public class Unit : MonoBehaviour {
 					}
 				}
 
-                //Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
-                //transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+                Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
+                targetRotation.y = transform.position.y;
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
                 transform.Translate(Vector3.forward * Time.deltaTime * speed * speedPercent, Space.Self);
+            
             }
+
 
             yield return null;
 

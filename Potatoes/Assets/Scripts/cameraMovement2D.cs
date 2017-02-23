@@ -8,6 +8,7 @@ public class cameraMovement2D : MonoBehaviour {
     public float zoomSpeed = 3;
     public bool allowMouseScroll = true;
     public bool allowZoom = true;
+    public bool AllowKeyboardScroll = true;
 
     public float xMax = 4; // left and right
     public float xMin = -4;
@@ -35,6 +36,17 @@ public class cameraMovement2D : MonoBehaviour {
             x -= (speed * scrollSpeed);
         else if (Input.mousePosition.x > Screen.width - scrollZone & allowMouseScroll == true)
             x += (speed * scrollSpeed);
+
+        if (Input.GetButton("Camera Left") & AllowKeyboardScroll==true) //camera left and right movement if key down
+            x -= (speed * scrollSpeed);
+        else if (Input.GetButton("Camera Right") & AllowKeyboardScroll == true)
+            x += (speed * scrollSpeed);
+
+        if (Input.GetButton("Camera Up") & AllowKeyboardScroll==true)
+            y += speed * scrollSpeed;
+        else if (Input.GetButton("Camera Down") & AllowKeyboardScroll==true) // camera up and down movement if keyboard move allowed
+            y -= speed * scrollSpeed;
+
 
         if (Input.mousePosition.y < scrollZone & allowMouseScroll == true)
             y -= speed * scrollSpeed;

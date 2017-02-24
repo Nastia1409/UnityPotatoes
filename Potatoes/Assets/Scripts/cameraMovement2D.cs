@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraMovement2D : MonoBehaviour {
+public class cameraMovement2D : MonoBehaviour
+{
     public float scrollZone = 15;
     public float scrollSpeed = 1;
     public float zoomSpeed = 3;
@@ -39,17 +40,17 @@ public class cameraMovement2D : MonoBehaviour {
         else if (Input.mousePosition.x > Screen.width - scrollZone & allowMouseScroll == true)
             x += (speed * scrollSpeed);
 
-        if (Input.GetButton("Camera Left") & AllowKeyboardScroll==true) //camera left and right movement if key down
+        if (Input.GetButton("Camera Left") & AllowKeyboardScroll == true) //camera left and right movement if key down
             x -= (speed * scrollSpeed);
         else if (Input.GetButton("Camera Right") & AllowKeyboardScroll == true)
             x += (speed * scrollSpeed);
 
-        if (Input.GetButton("Camera Up") & AllowKeyboardScroll==true)
+        if (Input.GetButton("Camera Up") & AllowKeyboardScroll == true)
             y += speed * scrollSpeed;
-        else if (Input.GetButton("Camera Down") & AllowKeyboardScroll==true) // camera up and down movement if keyboard move allowed
+        else if (Input.GetButton("Camera Down") & AllowKeyboardScroll == true) // camera up and down movement if keyboard move allowed
             y -= speed * scrollSpeed;
 
-        
+
         if (Input.mousePosition.y < scrollZone & allowMouseScroll == true)
             y -= speed * scrollSpeed;
         else if (Input.mousePosition.y > Screen.height - scrollZone & allowMouseScroll == true) // camera up and down movement if mouse in position
@@ -60,11 +61,11 @@ public class cameraMovement2D : MonoBehaviour {
         //    Camera.main.orthographicSize += Input.GetAxis("Mouse ScrollWheel")*zoomSpeed; // zoom in with mousewheel 
         //}
         float currentCameraZoom = Camera.main.orthographicSize;
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && currentCameraZoom<zMax) // if scrolling up and bellow the max limit zoom out
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && currentCameraZoom < zMax) // if scrolling up and bellow the max limit zoom out
             Camera.main.orthographicSize += (Input.GetAxisRaw("Mouse ScrollWheel")) * zoomSpeed;
-            
 
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0 && currentCameraZoom>zMin) //if scrolling down and above minimum zoom in
+
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0 && currentCameraZoom > zMin) //if scrolling down and above minimum zoom in
             Camera.main.orthographicSize += (Input.GetAxisRaw("Mouse ScrollWheel")) * zoomSpeed;
 
         Vector3 move = new Vector3(x, y, z) + desiredPosition;

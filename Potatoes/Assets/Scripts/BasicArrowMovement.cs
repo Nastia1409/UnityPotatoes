@@ -27,12 +27,12 @@ public class BasicArrowMovement : MonoBehaviour
 
         //Store the current vertical input in the float moveVertical.
         float moveVertical = Input.GetAxisRaw("Vertical");
-        float moving = Mathf.Abs(rb2d.velocity.x);
-        anim.SetFloat("Speed",rb2d.velocity.magnitude); // calculate speed of the unit in any direction and set animation Speed value to it
-
-        if (rb2d.velocity.x > 0 && !facingRight && moving>0) //if not looking right and walking right, look right
+        //float moving = Mathf.Abs(rb2d.velocity.x);
+        anim.SetFloat("Speed", rb2d.velocity.magnitude); // calculate speed of the unit in any direction and set animation Speed value to it
+        
+        if (rb2d.velocity.x > 0 && !facingRight) //if not looking right and walking right, look right
             Flip();
-        else if (rb2d.velocity.x < 0 && facingRight &&moving>0) //if looking left and looking left, look left
+        else if (rb2d.velocity.x < 0 && facingRight) //if looking left and looking left, look left
             Flip();
 
         //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.

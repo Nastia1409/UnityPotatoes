@@ -16,14 +16,16 @@ public class cameraMovement2D : MonoBehaviour {
     public float yMax = 4; //up and down
     public float yMin = -4;
 
-    public float zMax = -1; // zoom in and zoom out
-    public float zMin = -5;
+    public float zMax = 20; // zoom in and zoom out
+    public float zMin = 1;
+    public float zStart = 6;
 
     private Vector3 desiredPosition;
 
     private void Start()
     {
         desiredPosition = transform.position;
+        Camera.main.orthographicSize = zStart;
     }
 
     private void Update()
@@ -47,21 +49,27 @@ public class cameraMovement2D : MonoBehaviour {
         else if (Input.GetButton("Camera Down") & AllowKeyboardScroll==true) // camera up and down movement if keyboard move allowed
             y -= speed * scrollSpeed;
 
-
+        
         if (Input.mousePosition.y < scrollZone & allowMouseScroll == true)
             y -= speed * scrollSpeed;
         else if (Input.mousePosition.y > Screen.height - scrollZone & allowMouseScroll == true) // camera up and down movement if mouse in position
             y += speed * scrollSpeed;
 
-        if (allowZoom==true)
-        {
-            z += Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
-        }
+        //if (allowZoom==true)
+        //{
+        //    Camera.main.orthographicSize += Input.GetAxis("Mouse ScrollWheel")*zoomSpeed; // zoom in with mousewheel 
+        //}
+        float currentCameraZoom = Camera.main.orthographicSize;
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && currentCameraZoom<zMax) // if scrolling up and bellow the max limit zoom out
+            Camera.main.orthographicSize += (Input.GetAxisRaw("Mouse ScrollWheel")) * zoomSpeed;
+            
+
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0 && currentCameraZoom>zMin) //if scrolling down and above minimum zoom in
+            Camera.main.orthographicSize += (Input.GetAxisRaw("Mouse ScrollWheel")) * zoomSpeed;
 
         Vector3 move = new Vector3(x, y, z) + desiredPosition;
         move.x = Mathf.Clamp(move.x, xMin, xMax);
         move.y = Mathf.Clamp(move.y, yMin, yMax);
-        move.z = Mathf.Clamp(move.z, zMin, zMax);
         desiredPosition = move;
         transform.position = Vector3.Lerp(transform.position, desiredPosition, 0.2f);
     }

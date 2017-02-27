@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+//using Pathfinding;
 using System.Collections;
 
 public class BasicArrowMovement : MonoBehaviour
@@ -6,6 +7,7 @@ public class BasicArrowMovement : MonoBehaviour
 
     public float maxMoveSpeed;
     bool facingRight = true;
+    //public Bounds myBounds;
 
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
     Animator anim;
@@ -20,6 +22,11 @@ public class BasicArrowMovement : MonoBehaviour
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
     {
+        //var guo = new GraphUpdateObject(GetComponent<Collider2D>().bounds);
+       // var guo = new GraphUpdateObject(myBounds);
+        //guo.updatePhysics = true;
+        //AstarPath.active.UpdateGraphs(guo);
+
         //Store the current horizontal input in the float moveHorizontal.
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
         //anim.SetFloat("Speed", Mathf.Abs(moveHorizontal));

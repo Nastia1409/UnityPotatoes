@@ -33,13 +33,15 @@ public class PotatoBasicAI : MonoBehaviour, IPotatoAI
 
 
     // go to function
-    public void goTo(Transform target)
+    public void goTo(Vector3 target, bool isFollowTarget)
     {
-        GetComponentInParent<AILerp>().target = target;
+        AILerp aiLerp = GetComponentInParent<AILerp>();
+        aiLerp.target = target;
+        aiLerp.followTarget = isFollowTarget;
     }
     void stop()
     {
-        GetComponentInParent<AILerp>().target = null;
+        //GetComponentInParent<AILerp>().target = null;
     }
 
     public void OnRaycastHit()

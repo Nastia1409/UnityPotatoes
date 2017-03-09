@@ -8,6 +8,6 @@ namespace Assets.Scripts.Interfaces
 {
     public interface IPotatoAI
     {
-        void goTo(Transform target);
+        void goTo(Vector3 target, bool isFollowTarget);
     }
 }

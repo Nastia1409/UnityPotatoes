@@ -30,12 +30,13 @@ public class AILerp : MonoBehaviour {
 	 */
 	public float repathRate = 0.5F;
 
-	/** Target to move towards.
+    /** Target to move towards.
 	 * The AI will try to follow/move towards this target.
 	 * It can be a point on the ground where the player has clicked in an RTS for example, or it can be the player object in a zombie game.
 	 */
-	public Transform target;
-
+    //public Transform target;
+    public Vector3 target; //Nastia changed transform type of target to vector3
+    public bool followTarget; //Nastia added boolean to know is the ai need to follow target
 	/** Enables or disables searching for paths.
 	 * Setting this to false does not stop any active path requests from being calculated or stop it from continuing to follow the current path.
 	 * \see #canMove
@@ -207,10 +208,11 @@ public class AILerp : MonoBehaviour {
 	 */
 	public virtual void ForceSearchPath () {
 		if (target == null) throw new System.InvalidOperationException("Target is null");
-
+        if (!followTarget) return; //Nastia added - if the ai not set to follow target then dont search for path
+        
 		lastRepath = Time.time;
-		// This is where we should search to
-		var targetPosition = target.position;
+        // This is where we should search to
+        var targetPosition = target;//.position;
 		var currentPosition = GetFeetPosition();
 
 		// If we are following a path, start searching from the node we will reach next
@@ -363,7 +365,7 @@ public class AILerp : MonoBehaviour {
 	}
 
 	protected virtual void Update () {
-		if (canMove) {
+		if (canMove && followTarget) { //Nastia added followTarget condition - to determine if the user set ai to follow the target or not
 			Vector3 direction;
 			Vector3 nextPos = CalculateNextPosition(out direction);
 

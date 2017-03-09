@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public delegate void ChangeTarget(Transform target);
+    public delegate void ChangeTarget(Vector3 target, bool isFollowTarget);
     private event ChangeTarget OnTargetChange;
     private HashSet<GameObject> chosenAIList;
 
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
                 if(OnTargetChange != null)
                 {
                     //Set target to null
-                    OnTargetChange(null);
+                    OnTargetChange(Vector3.zero, false);
                     //Remove all registered functions
                     OnTargetChange = null;
 
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
             {
                 //if there functions registered for this event then raise it
                 if (OnTargetChange != null)
-                    OnTargetChange(hit.transform);
+                    OnTargetChange(hit.transform.position, true);
             }
             //if user clicked on object without collider 
             else
@@ -74,7 +74,12 @@ public class GameManager : MonoBehaviour
                 //TODO
                 //create transform data from mouse click location
                 // Transform position = new Transform();
+                Vector3 pos = Input.mousePosition;
+                pos = Camera.main.ScreenToWorldPoint(pos);
+                pos.z = 0;
 
+                if (OnTargetChange != null)
+                    OnTargetChange(pos, true);
             }
         }
 
